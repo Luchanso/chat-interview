@@ -35,7 +35,8 @@ const Avatar = styled(Image)`
 `;
 
 const dateUtils = Intl.DateTimeFormat(navigator.language || "en-US", {
-  hour12: true,
+  timeStyle: 'short',
+  dateStyle: 'short'
 });
 
 export function Message({ text, userId, datetime }: Props) {

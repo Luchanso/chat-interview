@@ -21,8 +21,9 @@ const Input = styled(Textarea)`
   margin: 0 8px !important;
 `;
 
-const Send = styled(Button)`
+const AmazingButton = styled(Button)`
   background-color: plum;
+  color: black !important;
   cursor: pointer;
 
   :hover {
@@ -46,6 +47,36 @@ export function Chat() {
       userId: "Sam",
     },
     {
+      datetime: "2022-03-28T07:47:29.713Z",
+      messageId: "4352954633381554659",
+      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
+      userId: "Sam",
+    },
+    {
+      datetime: "2022-03-28T07:47:29.713Z",
+      messageId: "4352954633381554659",
+      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
+      userId: "Sam",
+    },
+    {
+      datetime: "2022-03-28T07:47:29.713Z",
+      messageId: "4352954633381554659",
+      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
+      userId: "Sam",
+    },
+    {
+      datetime: "2022-03-28T07:47:29.713Z",
+      messageId: "4352954633381554659",
+      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
+      userId: "Sam",
+    },
+    {
+      datetime: "2022-03-28T07:47:29.713Z",
+      messageId: "4352954633381554659",
+      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
+      userId: "Sam",
+    },
+    {
       datetime: "2022-03-28T07:46:57.31Z",
       messageId: "4641048028065805651",
       text: "H",
@@ -62,7 +93,10 @@ export function Chat() {
   return (
     <Root>
       <Title p={2}>{channelName}</Title>
-      <Box flexGrow={1} flexShrink={0}>
+      <Box overflowY="scroll" mb={2}>
+        <Flex margin={2} justifyContent="center">
+          <AmazingButton>Load previous</AmazingButton>
+        </Flex>
         {messages.map((msg) => (
           <Message
             key={msg.messageId}
@@ -78,14 +112,13 @@ export function Chat() {
             setInputVal(value);
           }}
         />
-        <Send
-          color={"black"}
+        <AmazingButton
           onClick={() => {
             setInputVal("");
           }}
         >
           Send
-        </Send>
+        </AmazingButton>
       </Flex>
     </Root>
   );
