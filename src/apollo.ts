@@ -4,6 +4,6 @@ import {
 } from "@apollo/client";
 
 export const client = new ApolloClient({
-  uri: 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphiql',
+  uri: 'https://angular-test-backend-yc4c5cvnnq-an.a.run.app/graphql',
   cache: new InMemoryCache()
 });

@@ -10,6 +10,7 @@ export const Channel = styled.div<{ active?: boolean }>`
     :hover {
         background-color: pink;
     }
+    transition: 300ms;
 
     ${({ active }) => (active ? "background-color: plum;" : "")}
 `;

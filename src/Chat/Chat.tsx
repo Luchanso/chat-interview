@@ -1,124 +1,66 @@
 import { useReactiveVar } from "@apollo/client";
-import { Textarea } from "@rebass/forms";
-import { useState } from "react";
-import { Box, Button, Flex } from "rebass";
-import styled from "styled-components";
+import { useRef, useState } from "react";
+import { Box, Flex } from "rebass";
 import { useChannelName, userState } from "../chatState";
 import { Message } from "../Message/Message";
-
-const Root = styled.div`
-  height: 100%;
-  flex-direction: column;
-  display: flex;
-`;
-
-const Title = styled(Box)`
-  border-bottom: 1px solid #e6ecf3;
-`;
-
-const Input = styled(Textarea)`
-  border-radius: 4px;
-  margin: 0 8px !important;
-`;
-
-const AmazingButton = styled(Button)`
-  background-color: plum;
-  color: black !important;
-  cursor: pointer;
-
-  :hover {
-    background-color: #dda0ddcf;
-  }
-
-  :active {
-    background-color: #a274a2;
-  }
-`;
+import { Root, Title, AmazingButton, Input } from "./styled";
+import { useMessages } from "./useMessages";
 
 export function Chat() {
   const channelName = useChannelName();
   const userId = useReactiveVar(userState);
   const [inputVal, setInputVal] = useState("");
-  const messages = [
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:47:29.713Z",
-      messageId: "4352954633381554659",
-      text: "Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!Good Afternoon Joyse!",
-      userId: "Sam",
-    },
-    {
-      datetime: "2022-03-28T07:46:57.31Z",
-      messageId: "4641048028065805651",
-      text: "H",
-      userId: "Joyse",
-    },
-    {
-      datetime: "2022-03-28T07:46:57.31Z",
-      messageId: "4641048d028065805651",
-      text: "Hasdfij asldf a;sldj f;alsdj f;lasjdfl;ajsdf ;lajs;df ljasd fl",
-      userId: "Joyse",
-    },
-  ];
+  const messagesContainerRef = useRef<HTMLDivElement>();
+  const scrollToBottom = () =>
+    messagesContainerRef?.current?.scrollIntoView({
+      behavior: "smooth",
+      block: "end",
+    });
+  const { messages, loadPreviousMessages, loading, sendMessage } =
+    useMessages(scrollToBottom);
+
+  async function handleSend() {
+    setInputVal("");
+    await sendMessage(inputVal);
+  }
 
   return (
     <Root>
       <Title p={2}>{channelName}</Title>
-      <Box overflowY="scroll" mb={2}>
+      <Flex flexDirection={"column"} overflowY="scroll" mb={2} flexGrow={1}>
         <Flex margin={2} justifyContent="center">
-          <AmazingButton>Load previous</AmazingButton>
+          <AmazingButton onClick={loadPreviousMessages}>
+            Load previous
+          </AmazingButton>
         </Flex>
-        {messages.map((msg) => (
-          <Message
-            key={msg.messageId}
-            {...msg}
-            fromMe={msg.userId === userId}
-          />
-        ))}
-      </Box>
+        <Flex flexDirection="column-reverse" ref={messagesContainerRef}>
+          {!loading &&
+            messages.map((msg) => (
+              <Message
+                key={msg.messageId}
+                {...msg}
+                fromMe={msg.userId === userId}
+              />
+            ))}
+        </Flex>
+        <Box mx={2}>
+          {loading ? "Loading... 🐢" : "Auto update every 3 seconds"}
+        </Box>
+      </Flex>
       <Flex>
         <Input
           value={inputVal}
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
+              e.preventDefault();
+              handleSend();
+            }
+          }}
           onChange={({ target: { value } }) => {
             setInputVal(value);
           }}
         />
-        <AmazingButton
-          onClick={() => {
-            setInputVal("");
-          }}
-        >
-          Send
-        </AmazingButton>
+        <AmazingButton onClick={handleSend}>Send</AmazingButton>
       </Flex>
     </Root>
   );
