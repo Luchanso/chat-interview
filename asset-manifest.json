@@ -1,0 +1,12 @@
+{
+  "files": {
+    "main.js": "/chat-interview/static/js/main.e94f6506.js",
+    "static/js/787.08ee815f.chunk.js": "/chat-interview/static/js/787.08ee815f.chunk.js",
+    "index.html": "/chat-interview/index.html",
+    "main.e94f6506.js.map": "/chat-interview/static/js/main.e94f6506.js.map",
+    "787.08ee815f.chunk.js.map": "/chat-interview/static/js/787.08ee815f.chunk.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.e94f6506.js"
+  ]
+}
